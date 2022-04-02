@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -12,9 +13,27 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Product::all();
+        // todo: use tenary operator for checks
+
+        $products = Product::query();
+
+        // name parameter for search
+        if ($request->has('name')) {
+            $products->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        // perPage parameter for pagination
+        if ($request->has('perPage')) {
+            $limit = $request->perPage;
+        }else{
+            // don't go to pagination if perPage is not set
+            return $products->get();
+        }
+
+        // page parameter is added by the pagination library
+        return $products->paginate($limit);
     }
 
     /**
@@ -93,4 +112,19 @@ class ProductController extends Controller
         $product->delete();
         return response()->json(null, 204);
     }
+
+    // other methods for using api
+    // must have a route in routes.php
+    // Route::get('/products/search/{name}', [ProductController::class, 'index']);
+    // or use the option within index method
+    public function search(string $name)
+    {
+        if(Str::length($name) > 0){
+            $products = Product::where('name', 'like', '%' . $name . '%')->get();
+        }else{
+            $products = Product::all();
+        }
+        return $products;
+    }
+
 }
