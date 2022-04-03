@@ -15,9 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// public routes
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+// Route::get('products/search/{name}', [ProductController::class, 'search']);
+
+
+// protected routes
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('products', [ProductController::class, 'create'])->name('products.store');
+    Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.delete');
 });
 
-Route::get('products/search/{name}', [ProductController::class, 'search']);
-Route::apiResource('products', ProductController::class);
+// Route::apiResource('products', ProductController::class);
