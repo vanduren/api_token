@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.delete');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('test', [ProductController::class, 'admin'])->name('admin');
 });
 
 // Route::apiResource('products', ProductController::class);

@@ -3,6 +3,11 @@ Based on:
 https://www.youtube.com/watch?v=MT-GJQIY3EU&t=101s
 https://laravel.com/docs/9.x/sanctum
 
+for permissions see:
+https://www.youtube.com/watch?v=gyWLxpYWxFQ&ab_channel=LaravelDaily
+(adding to AuthController example in login, permission in ProductController in admin method)
+
+
 In laravel 9 Sanctum is allready enable.
 Step 1, 2, 3, 5 and 6 not necessary.
 Step 4 when using an spa. The line only needs to be uncommented.

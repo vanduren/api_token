@@ -54,7 +54,10 @@ class AuthController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $token = $user->createToken('maakt_niets_uit')->plainTextToken;
+        // $token = $user->createToken('maakt_niets_uit')->plainTextToken;
+        // adding permissions
+        // see admin method in crontroller
+        $token = $user->createToken('maakt_niets_uit', ['admin'])->plainTextToken;
 
         $response = [
             'user' => $user,

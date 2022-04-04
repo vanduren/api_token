@@ -127,4 +127,10 @@ class ProductController extends Controller
         return $products;
     }
 
+    public function admin(){
+        if(auth()->user()->tokenCan('admin')){
+            return 'you are admin';
+        }
+    }
+
 }
