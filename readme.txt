@@ -102,8 +102,10 @@ class AuthController extends Controller
 
 }
 
+11. Route:
+Route::post('/register', [AuthController::class, 'register']);
 
-11. logout function:
+12. logout function:
     public function logout(Request $request)
     {
         // Log::info('User logged out: ' . $request->user()->name);
@@ -114,5 +116,11 @@ class AuthController extends Controller
         return response()->json(['message' => 'Successfully logged out'], Response::HTTP_OK);
     }
 
+12. logout route (in secure routes):
+    Route::post('/logout', [AuthController::class, 'logout']);
 
-12. login function:
+14. login function:
+
+
+15. login route (not secure):
+Route::post('/login', [AuthController::class, 'login']);

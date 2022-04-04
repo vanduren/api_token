@@ -37,6 +37,33 @@ class AuthController extends Controller
         return response()->json($response, Response::HTTP_CREATED);
     }
 
+    public function login(Request $request)
+    {
+        $fields = $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string', // password_confirmation with password_confirmed
+        ]);
+
+        // check email
+        $user = User::where('email', $fields['email'])->first();
+
+        // check password
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
+            return response()->json([
+                'message' => 'Bad creds',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $token = $user->createToken('maakt_niets_uit')->plainTextToken;
+
+        $response = [
+            'user' => $user,
+            'token' => $token,
+        ];
+
+        return response()->json($response, Response::HTTP_CREATED);
+    }
+
     public function logout(Request $request)
     {
         // Log::info('User logged out: ' . $request->user()->name);
