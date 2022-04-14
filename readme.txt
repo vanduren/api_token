@@ -125,6 +125,35 @@ Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
 14. login function:
+    public function login(Request $request)
+    {
+        $fields = $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string', // password_confirmation with password_confirmed
+        ]);
+
+        // check email
+        $user = User::where('email', $fields['email'])->first();
+
+        // check password
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
+            return response()->json([
+                'message' => 'Bad creds',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        // $token = $user->createToken('maakt_niets_uit')->plainTextToken;
+        // adding permissions
+        // see admin method in crontroller
+        $token = $user->createToken('maakt_niets_uit', ['admin'])->plainTextToken;
+
+        $response = [
+            'user' => $user,
+            'token' => $token,
+        ];
+
+        return response()->json($response, Response::HTTP_CREATED);
+    }
 
 
 15. login route (not secure):
